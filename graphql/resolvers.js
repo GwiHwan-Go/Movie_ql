@@ -1,14 +1,8 @@
-import {people,getById, addPerson, deletePerson} from "./db.js"
-
+import { getMovies } from "./db.js";
 const resolvers = {
     Query: {
-        people: () => people,
-        person: (_, {id}) => getById(id)
-    },
-    Mutation: {
-        addPerson: (_, {name, age, gender}) => addPerson(name, age, gender),
-        deletePerson: (_, {id}) => deletePerson(id)
+        movies: (_, {rating, limit}) => getMovies(limit, rating)
     }
-};
+}
 
 export default resolvers;

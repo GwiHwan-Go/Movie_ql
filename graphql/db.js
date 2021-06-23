@@ -1,71 +1,16 @@
-export let people = [
-    {
-      id: 0,
-      name: "Nicolas",
-      age: 18,
-      gender: "female"
-    },
-    {
-      id: 1,
-      name: "Jisu",
-      age: 15,
-      gender: "female"
-    },
-    {
-      id: 2,
-      name: "Japan Guy",
-      age: 25,
-      gender: "male"
-    },
-    {
-      id: 3,
-      name: "Daal",
-      age: 11,
-      gender: "female"
-    },
-    {
-      id: 4,
-      name: "JD",
-      age: 340,
-      gender: "male"
-    },
-    {
-      id: 5,
-      name: "moondaddi",
-      age: 22,
-      gender: "male"
-    },
-    {
-      id: 6,
-      name: "flynn",
-      age: 12,
-      gender: "male"
-    }
-  ];
+import fetch from "node-fetch";
+const API_URL = "https://yts.am/api/v2/list_movies.json?";
 
-  export const getById = id => {
-      const filteredPeople = people.filter(
-          person => person.id ===id);
-          return filteredPeople[0];
+
+export const getMovies = (limit, rating) => {
+  let REQUEST_URL = API_URL;
+  if (limit > 0) {
+    REQUEST_URL += `limit=${limit}`;
   }
-
-  export const deletePerson = id =>{
-      const cleanedPeople = people.filter(person => person.id!==id);
-      if(people.length > cleanedPeople.length){
-          people = cleanedPeople;
-          return true;
-      } else {
-          return false;
-      }
+  if (rating > 0) {
+    REQUEST_URL += `&minimum_rating=${rating}`;
   }
-
-  export const addPerson = (name, age, gender) =>{
-      const newPerson = {
-          id : `${people.length+1}`,
-          name,
-          age,
-          gender
-      };
-      people.push(newPerson);
-      return newPerson
-  } //4:19 error course 10
+  return fetch(REQUEST_URL)
+    .then(res => res.json())
+    .then(json => json.data.movies);
+};
